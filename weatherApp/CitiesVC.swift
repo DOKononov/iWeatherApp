@@ -18,7 +18,7 @@ class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate  
             collectionView.dataSource = self
         }
     }
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
 
