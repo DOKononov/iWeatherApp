@@ -31,7 +31,7 @@ class DailyForcastTableViewCell: UITableViewCell {
             self?.weatherImageView.image = image
         })
         
-        weakDayLabel.text = dataService.weekday(fromDate: dailyForcast.date)
+        weakDayLabel.text = dataService.getWeekday(fromDate: dailyForcast.date)
         minTempLabel.text = String(dailyForcast.temperature.minTemp.value.int())
         maxTempLabel.text = String(dailyForcast.temperature.maxTemp.value.int())
         setupProgressView(dailyForcast: dailyForcast)

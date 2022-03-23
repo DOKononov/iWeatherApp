@@ -99,7 +99,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
             return "📅 5-DAY FORECAST"
         }
         if section == 1 {
-            return viewModel.currentWeather.first?.weatherText
+            return viewModel.currentWeather.first?.weatherDescription
         }
         return nil
     }

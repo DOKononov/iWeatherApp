@@ -54,6 +54,17 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        //TODO: - save selected city to coredata
+        let city = CityEntity(context: CoreDataService.shared.managedObjectContext)
+        let chosenCity = viewModel.cities[indexPath.row]
+        city.cityId = chosenCity.cityId
+        city.cityName = chosenCity.cityName
+    
+        CoreDataService.shared.saveContext()
+        
+        
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

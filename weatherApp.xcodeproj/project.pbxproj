@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		560B101127DE5034001D2EC1 /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560B101027DE5034001D2EC1 /* DateService.swift */; };
+		56238D2527E9DAAC0020969D /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56238D2427E9DAAC0020969D /* CoreDataService.swift */; };
+		56238D2727E9E3DF0020969D /* CityCoreDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56238D2627E9E3DF0020969D /* CityCoreDataModel.swift */; };
+		563EBDCF27E9ECA000A0DEC0 /* CityEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563EBDCD27E9ECA000A0DEC0 /* CityEntity+CoreDataClass.swift */; };
+		563EBDD027E9ECA000A0DEC0 /* CityEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563EBDCE27E9ECA000A0DEC0 /* CityEntity+CoreDataProperties.swift */; };
 		5643768127E1D3FD0048B773 /* HourlyForecastWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5643768027E1D3FD0048B773 /* HourlyForecastWeatherModel.swift */; };
 		5643768427E1F82D0048B773 /* HourlyForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5643768227E1F82D0048B773 /* HourlyForecastTableViewCell.swift */; };
 		564376AC27E313270048B773 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564376AB27E313270048B773 /* MainVC.swift */; };
@@ -45,6 +49,10 @@
 
 /* Begin PBXFileReference section */
 		560B101027DE5034001D2EC1 /* DateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateService.swift; sourceTree = "<group>"; };
+		56238D2427E9DAAC0020969D /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		56238D2627E9E3DF0020969D /* CityCoreDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCoreDataModel.swift; sourceTree = "<group>"; };
+		563EBDCD27E9ECA000A0DEC0 /* CityEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CityEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		563EBDCE27E9ECA000A0DEC0 /* CityEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CityEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		5643768027E1D3FD0048B773 /* HourlyForecastWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastWeatherModel.swift; sourceTree = "<group>"; };
 		5643768227E1F82D0048B773 /* HourlyForecastTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastTableViewCell.swift; sourceTree = "<group>"; };
 		564376AB27E313270048B773 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
@@ -93,6 +101,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		56238D2327E9DA500020969D /* CoreDataService */ = {
+			isa = PBXGroup;
+			children = (
+				56238D2827E9E9970020969D /* CoreDataModels */,
+				56238D2427E9DAAC0020969D /* CoreDataService.swift */,
+				5645988427D5F4A70010B503 /* weatherApp.xcdatamodeld */,
+			);
+			path = CoreDataService;
+			sourceTree = "<group>";
+		};
+		56238D2827E9E9970020969D /* CoreDataModels */ = {
+			isa = PBXGroup;
+			children = (
+				563EBDCD27E9ECA000A0DEC0 /* CityEntity+CoreDataClass.swift */,
+				563EBDCE27E9ECA000A0DEC0 /* CityEntity+CoreDataProperties.swift */,
+			);
+			path = CoreDataModels;
+			sourceTree = "<group>";
+		};
 		564376AD27E3448D0048B773 /* CurrentWeather */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,8 +157,8 @@
 		5645987A27D5F4A70010B503 /* weatherApp */ = {
 			isa = PBXGroup;
 			children = (
-				56B8FE0027E71F4600BA8BAA /* Helpers */,
 				567BB5AF27E10BA10079A883 /* App */,
+				56B8FE0027E71F4600BA8BAA /* Helpers */,
 				567BB5AE27E10B940079A883 /* Services */,
 				564598A327D65DCA0010B503 /* Modeles */,
 				5645988127D5F4A70010B503 /* Main.storyboard */,
@@ -180,6 +207,7 @@
 				56FC8C6127DC5FC00064162D /* CurrentWeatherModel.swift */,
 				5643768027E1D3FD0048B773 /* HourlyForecastWeatherModel.swift */,
 				56D2936427E8A01D0036A134 /* CityModel.swift */,
+				56238D2627E9E3DF0020969D /* CityCoreDataModel.swift */,
 			);
 			path = Modeles;
 			sourceTree = "<group>";
@@ -187,7 +215,7 @@
 		567BB5AE27E10B940079A883 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				5645988427D5F4A70010B503 /* weatherApp.xcdatamodeld */,
+				56238D2327E9DA500020969D /* CoreDataService */,
 				5645989F27D6131A0010B503 /* NetworkService.swift */,
 				560B101027DE5034001D2EC1 /* DateService.swift */,
 			);
@@ -368,18 +396,22 @@
 				56FC8C5C27DA5B7A0064162D /* DailyForcastWeatherModel.swift in Sources */,
 				56AB957927E5B7D300C64D1C /* Double+Int.swift in Sources */,
 				5645987C27D5F4A70010B503 /* AppDelegate.swift in Sources */,
+				563EBDCF27E9ECA000A0DEC0 /* CityEntity+CoreDataClass.swift in Sources */,
 				568FD3B027E7894A008FE31D /* CityCollectionViewCell.swift in Sources */,
 				564598A027D6131A0010B503 /* NetworkService.swift in Sources */,
 				56FC8C5E27DB86A20064162D /* CurrentWeatherTableViewCell.swift in Sources */,
 				5645987E27D5F4A70010B503 /* SceneDelegate.swift in Sources */,
 				56B8FE0527E722B200BA8BAA /* MainTabBarController.swift in Sources */,
 				56FC8C6227DC5FC00064162D /* CurrentWeatherModel.swift in Sources */,
+				56238D2727E9E3DF0020969D /* CityCoreDataModel.swift in Sources */,
 				560B101127DE5034001D2EC1 /* DateService.swift in Sources */,
 				56D2936B27E8BF230036A134 /* ResultsViewModel.swift in Sources */,
+				563EBDD027E9ECA000A0DEC0 /* CityEntity+CoreDataProperties.swift in Sources */,
 				56D2936827E8BBC10036A134 /* ResultsVC.swift in Sources */,
 				567BB5AD27E0F7060079A883 /* MainViewModel.swift in Sources */,
 				564376B327E345550048B773 /* HourlyForecastCollectionViewCell.swift in Sources */,
 				56B8FE0E27E723BF00BA8BAA /* CitiesVC.swift in Sources */,
+				56238D2527E9DAAC0020969D /* CoreDataService.swift in Sources */,
 				564376AC27E313270048B773 /* MainVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

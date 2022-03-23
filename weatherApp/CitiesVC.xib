@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CitiesVC" customModule="weatherApp" customModuleProvider="target">
             <connections>
-                <outlet property="collectionView" destination="YyD-Ys-piw" id="oGa-fs-4c2"/>
+                <outlet property="collectionView" destination="YyD-Ys-piw" id="iAH-Bb-QCo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

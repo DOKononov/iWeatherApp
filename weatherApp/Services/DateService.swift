@@ -9,7 +9,7 @@ import Foundation
 
 final class DateService {
     
-    func weekday(fromDate: Int) -> String {
+    func getWeekday(fromDate: Int) -> String {
         
         let dateformater = DateFormatter()
         dateformater.dateFormat = "E"
@@ -23,7 +23,7 @@ final class DateService {
         return incomeWeakDayStr == currentWeakDay ? "Today" : dateformater.string(from: date)
     }
     
-    func hourseForcast(fromDate: Int) -> String {
+    func getHour(fromDate: Int) -> String {
         
         let incomeTimeinterval = TimeInterval(fromDate)
         let date = Date(timeIntervalSince1970: incomeTimeinterval)

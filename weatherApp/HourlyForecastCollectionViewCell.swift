@@ -20,7 +20,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
     
     
     func setupHorForcast(forcast: HourlyForecastWeatherModel) {
-        self.hourLabel.text = DateService().hourseForcast(fromDate: forcast.epochDateTime)
+        self.hourLabel.text = DateService().getHour(fromDate: forcast.epochDateTime)
         self.tempLabel.text = String(forcast.temperature.value.int()) + "°"
         
         loadImage(forcast: forcast)

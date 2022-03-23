@@ -6,11 +6,19 @@
 //
 
 import UIKit
+import CoreData
 
 
-class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate   {
+class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
 
     var searchController = UISearchController(searchResultsController: ResultsVC())
+    var fetchResultCotroller: NSFetchedResultsController<CityEntity>!
+    
+    var citiesArray: [CityEntity] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -25,16 +33,14 @@ class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate  
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         
+        setupFetchResultController()
+        loadCities()
         registerCell()
         setupNavigationItem()
+
     }
 
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else {return}
-        
-        let resultsVC = searchController.searchResultsController  as? ResultsVC
-        resultsVC?.viewModel.loadCities(city: text)
-    }
+
 
     private func registerCell() {
         let cellNib = UINib(nibName: "\(CityCollectionViewCell.self)", bundle: nil)
@@ -47,7 +53,33 @@ class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate  
         navigationItem.searchController = searchController
     }
 
-
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else {return}
+        
+        let resultsVC = searchController.searchResultsController  as? ResultsVC
+        resultsVC?.viewModel.loadCities(city: text)
+    }
+    
+    private func setupFetchResultController() {
+        let request = CityEntity.fetchRequest()
+        let descriptor = NSSortDescriptor(key: "cityName", ascending: true)
+        request.sortDescriptors = [descriptor]
+        
+        fetchResultCotroller = NSFetchedResultsController(fetchRequest: request,
+                                                          managedObjectContext: CoreDataService.shared.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchResultCotroller.delegate = self
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        loadCities()
+    }
+    
+    func loadCities() {
+        try? fetchResultCotroller.performFetch()
+        if let result = fetchResultCotroller.fetchedObjects {
+            citiesArray = result
+        }
+    }
 }
 
 
@@ -57,11 +89,12 @@ extension CitiesVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         //TODO: -arrayCount
-        return 5
+        return citiesArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CityCollectionViewCell.self)", for: indexPath) as? CityCollectionViewCell
+        cell?.setupCell(city: citiesArray[indexPath.row])
         return cell ?? UICollectionViewCell()
     }
     

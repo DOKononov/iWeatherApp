@@ -24,7 +24,7 @@ class CurrentWeatherTableViewCell: UITableViewCell {
         if let minTemp = minTemp, let maxTemp = maxTemp {
             highLowTepmpLabel.text = "H: \(maxTemp.int())° L:\(minTemp.int())°"
         }
-        weatherDescription.text = currentWeather?.weatherText
+        weatherDescription.text = currentWeather?.weatherDescription
         
         //TODO: cityLabel
     }

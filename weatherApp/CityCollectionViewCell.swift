@@ -22,5 +22,11 @@ class CityCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = 20
         self.clipsToBounds = true
     }
+    
+    
+    func setupCell(city: CityEntity) {
+        cityLabel.text = city.cityName
+        
+    }
 
 }
