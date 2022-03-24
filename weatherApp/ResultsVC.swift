@@ -67,7 +67,7 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
         if result.isEmpty {
             saveEntity(selectedCity: selectedCity)
         } else {
-            //TODO: -if city already in coredata
+            //TODO: -if city already in coredata 
         }
         self.dismiss(animated: true, completion: nil)
         
