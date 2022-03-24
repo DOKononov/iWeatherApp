@@ -22,6 +22,8 @@ class ResultsVC: UIViewController {
         super.viewDidLoad()
         bind()
         registerCell()
+        
+//        vipe()
     }
     
     private func bind() {
@@ -34,10 +36,10 @@ class ResultsVC: UIViewController {
         let cellNib = UINib(nibName: "\(ResultTableViewCell.self)", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: "\(ResultTableViewCell.self)")
     }
-
+    
     
 }
- 
+
 
 
 extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
@@ -55,16 +57,42 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        //TODO: - save selected city to coredata
-        let city = CityEntity(context: CoreDataService.shared.managedObjectContext)
-        let chosenCity = viewModel.cities[indexPath.row]
-        city.cityId = chosenCity.cityId
-        city.cityName = chosenCity.cityName
-    
-        CoreDataService.shared.saveContext()
+        let selectedCity = viewModel.cities[indexPath.row]
         
+        let request = CityEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "cityId = %@", selectedCity.cityId)
         
+        guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else {return}
+        
+        if result.isEmpty {
+            saveEntity(selectedCity: selectedCity)
+        } else {
+            //TODO: -if city already in coredata
+        }
         self.dismiss(animated: true, completion: nil)
+        
     }
     
+    
+    
+    private func saveEntity(selectedCity: CityModel) {
+        let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
+        newEntity.cityId = selectedCity.cityId
+        newEntity.cityName = selectedCity.cityName
+        CoreDataService.shared.saveContext()
+    }
+    
+    
+    private func vipe() {
+        let request = CityEntity.fetchRequest()
+        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
+            result.forEach { city in
+                CoreDataService.shared.managedObjectContext.delete(city)
+            }
+            CoreDataService.shared.saveContext()
+        }
+        
+        
+            
+    }
 }
