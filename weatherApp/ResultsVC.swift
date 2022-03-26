@@ -22,8 +22,6 @@ class ResultsVC: UIViewController {
         super.viewDidLoad()
         bind()
         registerCell()
-        
-//        vipe()
     }
     
     private func bind() {
@@ -83,16 +81,4 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    private func vipe() {
-        let request = CityEntity.fetchRequest()
-        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
-            result.forEach { city in
-                CoreDataService.shared.managedObjectContext.delete(city)
-            }
-            CoreDataService.shared.saveContext()
-        }
-        
-        
-            
-    }
 }

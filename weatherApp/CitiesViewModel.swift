@@ -21,7 +21,7 @@ protocol CitiesViewModelProtocol {
 }
 
 
-final class CitiesViewModel: NSObject, CitiesViewModelProtocol {
+final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResultsControllerDelegate {
     
     var fetchResultCotroller: NSFetchedResultsController<CityEntity>!
     
@@ -34,6 +34,12 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol {
     var didContentChanged: (() -> Void)?
     
     func loadCitiesFromeCoreData() {
+        
+        let request = CityEntity.fetchRequest()
+        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
+            citiesArray = result
+        }
+        
         setupFetchResultController()
         try? fetchResultCotroller.performFetch()
         if let result = fetchResultCotroller.fetchedObjects {
@@ -46,11 +52,15 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol {
         let request = CityEntity.fetchRequest()
         let descriptor = NSSortDescriptor(key: "cityName", ascending: true)
         request.sortDescriptors = [descriptor]
-        
+
         fetchResultCotroller = NSFetchedResultsController(fetchRequest: request,
                                                           managedObjectContext: CoreDataService.shared.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchResultCotroller.delegate = self
     }
   
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        loadCitiesFromeCoreData()
+    }
 }
 
 

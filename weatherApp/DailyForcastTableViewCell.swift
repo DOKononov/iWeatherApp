@@ -25,10 +25,14 @@ class DailyForcastTableViewCell: UITableViewCell {
     
     func setup(dailyForcast: DailyForecast) {
         
-        activityIndicator.isHidden = true
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
                 
         networkService.downloadImage(imageID: dailyForcast.day.icon, complition: { [weak self] image in
             self?.weatherImageView.image = image
+            
+            self?.activityIndicator.isHidden = true
+            self?.activityIndicator.stopAnimating()
         })
         
         weakDayLabel.text = dataService.getWeekday(fromDate: dailyForcast.date)

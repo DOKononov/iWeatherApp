@@ -21,8 +21,8 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snowflake" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="plI-Fl-BMS">
-                        <rect key="frame" x="86" y="30" width="41.5" height="40"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="plI-Fl-BMS">
+                        <rect key="frame" x="86" y="29.5" width="41.5" height="41"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="plI-Fl-BMS" secondAttribute="height" id="D35-j0-nKi"/>
                         </constraints>
@@ -43,24 +43,26 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="a1t-SM-VjN">
-                        <rect key="frame" x="188.5" y="31.5" width="37" height="37"/>
+                        <rect key="frame" x="86" y="29.5" width="41.5" height="41"/>
                     </activityIndicatorView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="a1t-SM-VjN" firstAttribute="centerX" secondItem="OSf-VQ-P31" secondAttribute="centerX" id="17D-Kt-poy"/>
                     <constraint firstItem="sMp-dR-sdu" firstAttribute="width" secondItem="OSf-VQ-P31" secondAttribute="width" multiplier="0.15" id="2In-d1-Pkg"/>
                     <constraint firstItem="vbp-g9-R8h" firstAttribute="leading" secondItem="skL-rc-V0s" secondAttribute="trailing" constant="8" id="2Wy-Pd-WJx"/>
                     <constraint firstItem="sMp-dR-sdu" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="5ec-r8-B6z"/>
                     <constraint firstItem="vbp-g9-R8h" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="5yW-SQ-0aJ"/>
                     <constraint firstAttribute="trailing" secondItem="vbp-g9-R8h" secondAttribute="trailing" constant="8" id="CWB-C9-Xky"/>
                     <constraint firstItem="1bv-Qq-A3k" firstAttribute="leading" secondItem="plI-Fl-BMS" secondAttribute="trailing" constant="16" id="Fyh-j5-JSL"/>
-                    <constraint firstItem="a1t-SM-VjN" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="Qwd-3s-ewl"/>
                     <constraint firstItem="plI-Fl-BMS" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="T5y-aX-t4Z"/>
                     <constraint firstItem="1bv-Qq-A3k" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="TUz-oh-dF9"/>
                     <constraint firstItem="plI-Fl-BMS" firstAttribute="width" secondItem="OSf-VQ-P31" secondAttribute="width" multiplier="0.1" id="Vfy-ce-WaF"/>
                     <constraint firstItem="sMp-dR-sdu" firstAttribute="leading" secondItem="OSf-VQ-P31" secondAttribute="leading" constant="8" id="eBu-L5-84y"/>
+                    <constraint firstItem="a1t-SM-VjN" firstAttribute="trailing" secondItem="plI-Fl-BMS" secondAttribute="trailing" id="ieM-6f-MKZ"/>
                     <constraint firstItem="plI-Fl-BMS" firstAttribute="leading" secondItem="sMp-dR-sdu" secondAttribute="trailing" constant="16" id="kGp-4K-YUj"/>
+                    <constraint firstItem="a1t-SM-VjN" firstAttribute="bottom" secondItem="plI-Fl-BMS" secondAttribute="bottom" id="l8b-h1-qlB"/>
                     <constraint firstItem="skL-rc-V0s" firstAttribute="leading" secondItem="1bv-Qq-A3k" secondAttribute="trailing" constant="8" id="n8l-x5-pbw"/>
+                    <constraint firstItem="a1t-SM-VjN" firstAttribute="leading" secondItem="plI-Fl-BMS" secondAttribute="leading" id="vG8-VP-0sn"/>
+                    <constraint firstItem="a1t-SM-VjN" firstAttribute="top" secondItem="plI-Fl-BMS" secondAttribute="top" id="wy2-eA-iMk"/>
                     <constraint firstItem="skL-rc-V0s" firstAttribute="centerY" secondItem="OSf-VQ-P31" secondAttribute="centerY" id="yKq-bC-Po9"/>
                 </constraints>
             </tableViewCellContentView>
@@ -75,7 +77,4 @@
             <point key="canvasLocation" x="5.7971014492753632" y="114.50892857142857"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="snowflake" catalog="system" width="121" height="128"/>
-    </resources>
 </document>

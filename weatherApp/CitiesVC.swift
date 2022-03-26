@@ -9,18 +9,20 @@ import UIKit
 import CoreData
 
 
-class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
+final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
 
-    var searchController = UISearchController(searchResultsController: ResultsVC())
-    var viewModel: CitiesViewModelProtocol = CitiesViewModel()
+
+    private var searchController = UISearchController(searchResultsController: ResultsVC())
+    private var viewModel: CitiesViewModelProtocol = CitiesViewModel()
     
     
-    @IBOutlet weak var collectionView: UICollectionView! {
+    @IBOutlet private weak var tableView: UITableView! {
         didSet {
-            collectionView.delegate = self
-            collectionView.dataSource = self
+            tableView.delegate = self
+            tableView.dataSource = self
         }
     }
+
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,26 +33,23 @@ class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, 
         registerCell()
         setupNavigationItem()
         
+        
         bind()
         viewModel.loadCitiesFromeCoreData()
-        viewModel.setupFetchResultController()
-        viewModel.fetchResultCotroller.delegate = self
+      
 
     }
 
     private func bind() {
         viewModel.didContentChanged = {
-            self.collectionView.reloadData()
+            self.tableView.reloadData()
         }
     }
     
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        viewModel.loadCitiesFromeCoreData()
-    }
 
     private func registerCell() {
-        let cellNib = UINib(nibName: "\(CityCollectionViewCell.self)", bundle: nil)
-        collectionView.register(cellNib, forCellWithReuseIdentifier: "\(CityCollectionViewCell.self)")
+        let cellNib = UINib(nibName: "\(CityTableViewCell.self)", bundle: nil)
+        tableView.register(cellNib, forCellReuseIdentifier: "\(CityTableViewCell.self)")
     }
     
     private func setupNavigationItem() {
@@ -72,23 +71,43 @@ class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, 
 
 
 
-extension CitiesVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //TODO: -arrayCount
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.citiesArray.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(CityCollectionViewCell.self)", for: indexPath) as? CityCollectionViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "\(CityTableViewCell.self)", for: indexPath) as? CityTableViewCell
         cell?.setupCell(city: viewModel.citiesArray[indexPath.row])
-        return cell ?? UICollectionViewCell()
+        return cell ?? UITableViewCell()
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let width = UIScreen.main.bounds.width - 32
-        return CGSize(width: width, height: width * 0.3)
+        return width * 0.3
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteCell = UIContextualAction(style: .destructive, title: "Delete") { action, view, _ in
+            let selectedCity = self.viewModel.citiesArray[indexPath.row]
+            CoreDataService.shared.managedObjectContext.delete(selectedCity)
+            CoreDataService.shared.saveContext()
+            self.viewModel.loadCitiesFromeCoreData()
+            self.tableView.reloadData()
+        }
+        return UISwipeActionsConfiguration(actions: [deleteCell])
+    }
+
+
+    
+
     
 }
