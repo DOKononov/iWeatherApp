@@ -14,7 +14,7 @@ class CurrentWeatherTableViewCell: UITableViewCell {
     @IBOutlet private weak var weatherDescription: UILabel!
     @IBOutlet private weak var highLowTepmpLabel: UILabel!
     
-    func setupCellWith(currentWeather: CurrentWeatherModel?, dailyForcast: [DailyForecast]) {
+    func setupCellWith(currentWeather: CurrentWeatherModel?, dailyForcast: [DailyForecast], currentCity: CityCoreDataModel?) {
         if let currentWeather = currentWeather {
             currentTempLabel.text = "\(currentWeather.temperature.metric.value.int())°"
         }
@@ -25,8 +25,11 @@ class CurrentWeatherTableViewCell: UITableViewCell {
             highLowTepmpLabel.text = "H: \(maxTemp.int())° L:\(minTemp.int())°"
         }
         weatherDescription.text = currentWeather?.weatherDescription
+        if let cityName = currentCity?.cityName {
+            cityLabel.text = cityName
+        }
+
         
-        //TODO: cityLabel
     }
     
     

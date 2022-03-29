@@ -12,7 +12,7 @@ class NetworkService {
     
     private let networkQueue = DispatchQueue(label: "networkQueue", qos: .userInitiated)
     private let host = "https://dataservice.accuweather.com/"
-    private let debugCity = "28580"
+//    private let debugCity = "28580"
     private let tokenPath = "?apikey="
     private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
     private let pathMetric = "&metric=true"
@@ -23,7 +23,7 @@ class NetworkService {
     func getDailyForcast(city: String, complition: @escaping (DailyForcastWeatherModel) -> Void) {
         
         let dailyForcastPath = "forecasts/v1/daily/5day/"
-        let urlStr = host + dailyForcastPath + debugCity + tokenPath + token + pathMetric
+        let urlStr = host + dailyForcastPath + city + tokenPath + token + pathMetric
         guard let url = URL(string: urlStr) else {return}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -49,7 +49,7 @@ class NetworkService {
     func getCurrentWeather(city: String, complition: @escaping ([CurrentWeatherModel]) -> Void) {
         
         let currentWeatherPath = "currentconditions/v1/"
-        let urlStr = host + currentWeatherPath + debugCity + tokenPath + token
+        let urlStr = host + currentWeatherPath + city + tokenPath + token
         
         guard let url = URL(string: urlStr) else {return}
         var request = URLRequest(url: url)
@@ -97,7 +97,7 @@ class NetworkService {
     func getHourlyForcast(city: String, complition: @escaping ([HourlyForecastWeatherModel]) -> Void) {
         
         let hourlyForcastPath = "/forecasts/v1/hourly/12hour/"
-        let urlStr = host + hourlyForcastPath + debugCity + tokenPath + token + pathMetric
+        let urlStr = host + hourlyForcastPath + city + tokenPath + token + pathMetric
         guard let url = URL(string: urlStr) else { return }
         var reqest = URLRequest(url: url)
         reqest.httpMethod = "GET"

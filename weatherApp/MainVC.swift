@@ -8,7 +8,13 @@ import UIKit
 
 class MainVC: UIViewController {
     
-     var viewModel: MainViewModelProtocol = MainViewModel()
+    var viewModel: MainViewModelProtocol = MainViewModel()
+    var city: CityCoreDataModel? {
+        didSet {
+            viewModel.city = city
+            loadWeather()
+        }
+    }
     
     @IBOutlet private weak var currentCity: UILabel!
     @IBOutlet private weak var currentTemperature: UILabel!
@@ -25,17 +31,27 @@ class MainVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         bind()
-        
-        viewModel.loadCurrentWeather()
-        viewModel.loadDailyForcast()
-        viewModel.loadHourlyForcast()
-        
+        loadWeather()
         tableViewRegisterCells()
     }
     
 
+    private func loadWeather() {
+        
+        
+        if let cityId = viewModel.city?.cityId {
+            viewModel.loadCurrentWeather(cityId: cityId)
+            viewModel.loadDailyForcast(city: cityId)
+            viewModel.loadHourlyForcast(city: cityId)
+        } else {
+            print ("ERROR! ", #function)
+        }
+        
+
+    }
+    
     private func bind() {
         viewModel.didContentChanged = {
             self.tableView.reloadData()
@@ -127,7 +143,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     private func setupCurrenWeather(tableView: UITableView, indexPath: IndexPath) -> CurrentWeatherTableViewCell? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(CurrentWeatherTableViewCell.self)", for: indexPath) as? CurrentWeatherTableViewCell
-        cell?.setupCellWith(currentWeather: viewModel.currentWeather.first, dailyForcast: viewModel.dailyForecasts)
+       
+        cell?.setupCellWith(currentWeather: viewModel.currentWeather.first, dailyForcast: viewModel.dailyForecasts, currentCity: viewModel.city)
         return cell
     }
     

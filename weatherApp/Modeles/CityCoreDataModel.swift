@@ -26,3 +26,6 @@ final class CityCoreDataModel {
     }
     
 }
+
+
+

@@ -2,7 +2,7 @@
 //  CityEntity+CoreDataProperties.swift
 //  weatherApp
 //
-//  Created by Dmitry Kononov on 22.03.22.
+//  Created by Dmitry Kononov on 27.03.22.
 //
 //
 

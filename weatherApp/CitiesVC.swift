@@ -10,8 +10,8 @@ import CoreData
 
 
 final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
-
-
+    
+    
     private var searchController = UISearchController(searchResultsController: ResultsVC())
     private var viewModel: CitiesViewModelProtocol = CitiesViewModel()
     
@@ -22,11 +22,11 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
             tableView.dataSource = self
         }
     }
-
-     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         
@@ -36,17 +36,17 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         
         bind()
         viewModel.loadCitiesFromeCoreData()
-      
-
+        
+        
     }
-
+    
     private func bind() {
         viewModel.didContentChanged = {
             self.tableView.reloadData()
         }
     }
     
-
+    
     private func registerCell() {
         let cellNib = UINib(nibName: "\(CityTableViewCell.self)", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: "\(CityTableViewCell.self)")
@@ -57,7 +57,7 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.searchController = searchController
     }
-
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {return}
         
@@ -65,8 +65,8 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         resultsVC?.viewModel.loadCities(city: text)
     }
     
-
-
+    
+    
 }
 
 
@@ -89,9 +89,33 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         let width = UIScreen.main.bounds.width - 32
         return width * 0.3
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let coreDataModel = viewModel.citiesArray[indexPath.row]
+        let cityToPresent =  cityModelFrom(coreDataModel: coreDataModel)
+        
+        guard let mainVC = tabBarController?.viewControllers?.first as? MainVC else {return}
+        mainVC.city = cityToPresent
+        
+        self.tabBarController?.selectedIndex = 0
+    }
+    
+    private func cityModelFrom(coreDataModel: CityEntity) -> CityCoreDataModel? {
+        if  let id = coreDataModel.cityId,
+            let name = coreDataModel.cityName  {
+            let cityModel = CityCoreDataModel(cityId: id,
+                                              cityName: name,
+                                              currentTemp: coreDataModel.currentTemp,
+                                              weatherDescription: description,
+                                              minTemp: coreDataModel.minTemp,
+                                              maxTemp: coreDataModel.maxTemp)
+            print("id", cityModel.cityId, "name", cityModel.cityName)
+            return cityModel
+        } else {
+            print ("ERROR! ", #function)
+            return nil
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -105,9 +129,9 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         }
         return UISwipeActionsConfiguration(actions: [deleteCell])
     }
-
-
     
-
+    
+    
+    
     
 }

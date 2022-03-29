@@ -7,19 +7,29 @@
 
 protocol MainViewModelProtocol {
     
+    var city: CityCoreDataModel? { get set }
     var dailyForecasts: [DailyForecast] { get }
     var currentWeather: [CurrentWeatherModel] { get }
     var hourlyForcast: [HourlyForecastWeatherModel] { get }
     
     var didContentChanged: (() -> Void)?  { get set }
     
-    func loadCurrentWeather()
-    func loadDailyForcast()
-    func loadHourlyForcast()
+    func loadCurrentWeather(cityId: String)
+    func loadDailyForcast(city: String)
+    func loadHourlyForcast(city: String)
 }
 
 
+
+
 final class MainViewModel: MainViewModelProtocol {
+    
+    var city: CityCoreDataModel? = CityCoreDataModel(cityId: "28580",
+                                                     cityName: "Minsk",
+                                                     currentTemp: 2,
+                                                     weatherDescription: "",
+                                                     minTemp: 2,
+                                                     maxTemp: 2)
 
     var dailyForecasts: [DailyForecast] = [] {
         didSet {
@@ -43,20 +53,20 @@ final class MainViewModel: MainViewModelProtocol {
     
     private lazy var networkService = NetworkService()
     
-    func loadCurrentWeather() {
-        networkService.getCurrentWeather(city: "") { [weak self] currentWeather in
+    func loadCurrentWeather(cityId: String) {
+        networkService.getCurrentWeather(city: cityId) { [weak self] currentWeather in
             self?.currentWeather = currentWeather
         }
     }
     
-    func loadDailyForcast() {
-        networkService.getDailyForcast(city: "") { [weak self] dailyForcastWeather in
+    func loadDailyForcast(city: String) {
+        networkService.getDailyForcast(city: city) { [weak self] dailyForcastWeather in
             self?.dailyForecasts = dailyForcastWeather.dailyForecasts
         }
     }
     
-    func loadHourlyForcast() {
-        networkService.getHourlyForcast(city: "") { [weak self] hourlyForcast in
+    func loadHourlyForcast(city: String) {
+        networkService.getHourlyForcast(city: city) { [weak self] hourlyForcast in
             self?.hourlyForcast = hourlyForcast
         }
     }
