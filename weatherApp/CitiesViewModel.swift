@@ -16,6 +16,7 @@ protocol CitiesViewModelProtocol {
     var didContentChanged: (() -> Void)?  { get set }
     
     func loadCitiesFromeCoreData()
+    func updateCitiesData()
     func setupFetchResultController()
     
 }
@@ -61,6 +62,25 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         loadCitiesFromeCoreData()
     }
+    
+    
+    func updateCitiesData() {
+        citiesArray.forEach { city in
+            
+            guard let id = city.cityId else {return}
+            
+            NetworkService().getDailyForcast(city: id) { dailyForcast in
+                city.maxTemp = dailyForcast.dailyForecasts.first?.temperature.maxTemp.value ?? 0
+                city.minTemp = dailyForcast.dailyForecasts.first?.temperature.minTemp.value ?? 0
+            }
+            NetworkService().getCurrentWeather(city: id) { currentWeather in
+                city.currentTemp = currentWeather.first?.temperature.metric.value ?? 0
+                city.weatherDescription = currentWeather.first?.weatherDescription
+                
+            }
+        }
+    }
+    
 }
 
 

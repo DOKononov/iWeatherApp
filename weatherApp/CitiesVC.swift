@@ -29,6 +29,7 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
+        navigationItem.hidesSearchBarWhenScrolling = false
         
         registerCell()
         setupNavigationItem()
@@ -36,9 +37,9 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         
         bind()
         viewModel.loadCitiesFromeCoreData()
-        
-        
+        viewModel.updateCitiesData()
     }
+    
     
     private func bind() {
         viewModel.didContentChanged = {
@@ -110,7 +111,6 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
                                               weatherDescription: description,
                                               minTemp: coreDataModel.minTemp,
                                               maxTemp: coreDataModel.maxTemp)
-            print("id", cityModel.cityId, "name", cityModel.cityName)
             return cityModel
         } else {
             print ("ERROR! ", #function)

@@ -63,7 +63,7 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
         guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else {return}
         
         if result.isEmpty {
-            saveEntity(selectedCity: selectedCity)
+            saveEntity(for: selectedCity)
         } else {
             //TODO: -if city already in coredata 
         }
@@ -73,7 +73,7 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     
     
     //MARK: -save city to coreData
-    private func saveEntity(selectedCity: CityModel) {
+    private func saveEntity(for selectedCity: CityModel) {
         let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
         newEntity.cityId = selectedCity.cityId
         newEntity.cityName = selectedCity.cityName
