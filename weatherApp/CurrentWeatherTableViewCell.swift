@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CurrentWeatherTableViewCell: UITableViewCell {
+final class CurrentWeatherTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var cityLabel: UILabel!
     @IBOutlet private weak var currentTempLabel: UILabel!

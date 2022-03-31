@@ -3,12 +3,13 @@
     <entity name="CityEntity" representedClassName="CityEntity" syncable="YES">
         <attribute name="cityId" attributeType="String" defaultValueString="no id"/>
         <attribute name="cityName" attributeType="String" defaultValueString="no name"/>
+        <attribute name="country" attributeType="String" defaultValueString="n/a"/>
         <attribute name="currentTemp" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="maxTemp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="minTemp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="weatherDescription" attributeType="String" defaultValueString="no description"/>
     </entity>
     <elements>
-        <element name="CityEntity" positionX="-63" positionY="-18" width="128" height="119"/>
+        <element name="CityEntity" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

@@ -76,9 +76,9 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="cityLabel" destination="PCU-w5-vgM" id="a6e-vW-2jf"/>
+                <outlet property="countryLabel" destination="vLA-eI-GJo" id="tcr-Xr-ZrL"/>
+                <outlet property="currentTempLabel" destination="cmr-q2-jHK" id="j91-G7-kbm"/>
                 <outlet property="higLowTempLabel" destination="Jq0-6v-25P" id="AzF-d2-7Kh"/>
-                <outlet property="tempLabel" destination="cmr-q2-jHK" id="j91-G7-kbm"/>
-                <outlet property="timeLabel" destination="vLA-eI-GJo" id="tcr-Xr-ZrL"/>
                 <outlet property="weatherConditionsLabel" destination="aTd-PD-cEh" id="TB1-YC-qEM"/>
             </connections>
             <point key="canvasLocation" x="122.46376811594205" y="108.48214285714285"/>

@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ResultsVC: UIViewController {
+final class ResultsVC: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView! {
+    @IBOutlet private weak var tableView: UITableView! {
         didSet {
             tableView.delegate = self
             tableView.dataSource = self
@@ -17,6 +17,7 @@ class ResultsVC: UIViewController {
     }
     
     var viewModel: ResultsViewModelProtocol = ResultsViewModel()
+    private lazy var networkService = NetworkService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +60,6 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
         
         let request = CityEntity.fetchRequest()
         request.predicate = NSPredicate(format: "cityId = %@", selectedCity.cityId)
-        
         guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else {return}
         
         if result.isEmpty {
@@ -72,11 +72,23 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    
+    //MARK: -save city to coreData
     private func saveEntity(selectedCity: CityModel) {
         let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
         newEntity.cityId = selectedCity.cityId
         newEntity.cityName = selectedCity.cityName
+        
+        networkService.getCurrentWeather(city: selectedCity.cityId) { currentWeather in
+            newEntity.currentTemp = currentWeather.first?.temperature.metric.value ?? 0
+            newEntity.weatherDescription = currentWeather.first?.weatherDescription
+        }
+        
+        networkService.getDailyForcast(city: selectedCity.cityId) { dailyForcast in
+            newEntity.maxTemp = dailyForcast.dailyForecasts.first?.temperature.maxTemp.value ?? 0
+            newEntity.minTemp = dailyForcast.dailyForecasts.first?.temperature.minTemp.value ?? 0
+        }
+        newEntity.country = selectedCity.country.countryFullName
+        
         CoreDataService.shared.saveContext()
     }
     

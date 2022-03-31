@@ -17,10 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-//        let mainVC = MainVC(nibName:  "\(MainVC.self)", bundle: nil)
-//        window?.rootViewController = mainVC
-//        window?.makeKeyAndVisible()
-        
         let tabVC = MainTabBarController(nibName: "\(MainTabBarController.self)", bundle: nil)
         window?.rootViewController = tabVC
         window?.makeKeyAndVisible()

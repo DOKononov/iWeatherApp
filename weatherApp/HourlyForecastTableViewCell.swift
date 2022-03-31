@@ -7,10 +7,10 @@
 
 import UIKit
 
-class HourlyForecastTableViewCell: UITableViewCell {
+final class HourlyForecastTableViewCell: UITableViewCell {
 
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet private weak var collectionView: UICollectionView!
     
     var forcast = [HourlyForecastWeatherModel]() 
     

@@ -59,7 +59,7 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else {return}
+        guard let text = searchController.searchBar.text, !text.isEmpty, text != "" else {return}
         
         let resultsVC = searchController.searchResultsController  as? ResultsVC
         resultsVC?.viewModel.loadCities(city: text)
@@ -118,6 +118,7 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    //MARK: -delete city from coredata
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let deleteCell = UIContextualAction(style: .destructive, title: "Delete") { action, view, _ in

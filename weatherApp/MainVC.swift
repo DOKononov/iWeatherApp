@@ -6,9 +6,9 @@
 //
 import UIKit
 
-class MainVC: UIViewController {
+final class MainVC: UIViewController {
     
-    var viewModel: MainViewModelProtocol = MainViewModel()
+    private  var viewModel: MainViewModelProtocol = MainViewModel()
     var city: CityCoreDataModel? {
         didSet {
             viewModel.city = city
@@ -37,7 +37,7 @@ class MainVC: UIViewController {
         tableViewRegisterCells()
     }
     
-
+    
     private func loadWeather() {
         
         
@@ -49,7 +49,7 @@ class MainVC: UIViewController {
             print ("ERROR! ", #function)
         }
         
-
+        
     }
     
     private func bind() {
@@ -60,7 +60,7 @@ class MainVC: UIViewController {
     
     
     private func tableViewRegisterCells() {
-
+        
         let forcastTableViewCell = UINib(nibName: "\(DailyForcastTableViewCell.self)", bundle: nil)
         tableView.register(forcastTableViewCell, forCellReuseIdentifier: "\(DailyForcastTableViewCell.self)")
         
@@ -124,7 +124,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         return 3
     }
     
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 200
@@ -138,20 +138,20 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-
+    
     //MARK: -funcs setup tableView
     
     private func setupCurrenWeather(tableView: UITableView, indexPath: IndexPath) -> CurrentWeatherTableViewCell? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(CurrentWeatherTableViewCell.self)", for: indexPath) as? CurrentWeatherTableViewCell
-       
+        
         cell?.setupCellWith(currentWeather: viewModel.currentWeather.first, dailyForcast: viewModel.dailyForecasts, currentCity: viewModel.city)
         return cell
     }
     
     private func setupDailyForcast(tableView: UITableView, indexPath: IndexPath) ->  DailyForcastTableViewCell? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(DailyForcastTableViewCell.self)", for: indexPath) as? DailyForcastTableViewCell
-        cell?.currentTemp = viewModel.currentWeather.first?.temperature.metric.value ?? 0
-        cell?.setup(dailyForcast: viewModel.dailyForecasts[indexPath.row])
+        let currentTemp = viewModel.currentWeather.first?.temperature.metric.value ?? 0
+        cell?.setup(dailyForcast: viewModel.dailyForecasts[indexPath.row], currentTemp: currentTemp )
         return cell
     }
     
@@ -161,6 +161,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-
+    
     
 }

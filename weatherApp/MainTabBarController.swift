@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainTabBarController: UITabBarController {
+final class MainTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,15 +17,11 @@ class MainTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        //        let mainVC = UINavigationController(rootViewController: MainVC())
         let mainVC = MainVC()
         mainVC.tabBarItem.image = UIImage(systemName: "star")
         mainVC.tabBarItem.selectedImage = UIImage(systemName: "star.fill")
         
         let citiesVC = UINavigationController(rootViewController: CitiesVC())
-        
-//        let citiesVC = CitiesVC()
-        
         citiesVC.tabBarItem.image = UIImage(systemName: "magnifyingglass.circle")
         citiesVC.tabBarItem.selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
         

@@ -7,17 +7,12 @@
 
 import UIKit
 
-class HourlyForecastCollectionViewCell: UICollectionViewCell {
+final class HourlyForecastCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var hourLabel: UILabel!
-    @IBOutlet weak var weatherImageView: UIImageView!
-    @IBOutlet weak var tempLabel: UILabel!
-    
-    override class func awakeFromNib() {
-        super.awakeFromNib()
-    }
-    
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var hourLabel: UILabel!
+    @IBOutlet private weak var weatherImageView: UIImageView!
+    @IBOutlet private weak var tempLabel: UILabel!
     
     func setupHorForcast(forcast: HourlyForecastWeatherModel) {
         self.hourLabel.text = DateService().getHour(fromDate: forcast.epochDateTime)

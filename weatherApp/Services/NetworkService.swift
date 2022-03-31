@@ -8,11 +8,10 @@
 import Foundation
 import UIKit
 
-class NetworkService {
+final class NetworkService {
     
     private let networkQueue = DispatchQueue(label: "networkQueue", qos: .userInitiated)
     private let host = "https://dataservice.accuweather.com/"
-//    private let debugCity = "28580"
     private let tokenPath = "?apikey="
     private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
     private let pathMetric = "&metric=true"

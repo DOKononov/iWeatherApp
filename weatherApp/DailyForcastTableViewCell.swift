@@ -7,15 +7,15 @@
 
 import UIKit
 
-class DailyForcastTableViewCell: UITableViewCell {
+final class DailyForcastTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var weakDayLabel: UILabel!
-    @IBOutlet weak var weatherImageView: UIImageView!
-    @IBOutlet weak var minTempLabel: UILabel!
-    @IBOutlet weak var weatherProgressView: UIProgressView!
-    @IBOutlet weak var maxTempLabel: UILabel!
+    @IBOutlet private weak var weakDayLabel: UILabel!
+    @IBOutlet private weak var weatherImageView: UIImageView!
+    @IBOutlet private weak var minTempLabel: UILabel!
+    @IBOutlet private weak var weatherProgressView: UIProgressView!
+    @IBOutlet private weak var maxTempLabel: UILabel!
     
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     var currentTemp = 0.0
     
@@ -23,7 +23,7 @@ class DailyForcastTableViewCell: UITableViewCell {
     private lazy var networkService = NetworkService()
  
     
-    func setup(dailyForcast: DailyForecast) {
+    func setup(dailyForcast: DailyForecast, currentTemp: Double) {
         
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -38,19 +38,24 @@ class DailyForcastTableViewCell: UITableViewCell {
         weakDayLabel.text = dataService.getWeekday(fromDate: dailyForcast.date)
         minTempLabel.text = String(dailyForcast.temperature.minTemp.value.int())
         maxTempLabel.text = String(dailyForcast.temperature.maxTemp.value.int())
-        setupProgressView(dailyForcast: dailyForcast)
+        setupProgressView(dailyForcast: dailyForcast, currentTemp: currentTemp)
     }
     
     
     
-    //TODO: setupProgressView
-    private func setupProgressView(dailyForcast: DailyForecast) {
+    private func setupProgressView(dailyForcast: DailyForecast, currentTemp: Double) {
                 
-        if Float(dailyForcast.temperature.maxTemp.value) != 0 {
-            weatherProgressView.progress = Float(currentTemp) / Float(dailyForcast.temperature.maxTemp.value)
-        } else {
-            weatherProgressView.progress = 0
-        }
+        let maxTemp = Float(dailyForcast.temperature.maxTemp.value)
+        let minTemp = Float(dailyForcast.temperature.minTemp.value)
+        
+        let tempDiff =  maxTemp - minTemp
+        weatherProgressView.progress = Float(currentTemp) / tempDiff
+        
+//        if Float(dailyForcast.temperature.maxTemp.value) != 0 {
+//            weatherProgressView.progress = Float(currentTemp) / Float(dailyForcast.temperature.maxTemp.value)
+//        } else {
+//            weatherProgressView.progress = 0
+//        }
         
     }
     

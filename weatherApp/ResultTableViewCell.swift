@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ResultTableViewCell: UITableViewCell {
+final class ResultTableViewCell: UITableViewCell {
 
     @IBOutlet private weak var cityLabel: UILabel!
     @IBOutlet private weak var countryLabel: UILabel!

@@ -7,13 +7,13 @@
 
 import UIKit
 
-class CityTableViewCell: UITableViewCell {
+final class CityTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var weatherConditionsLabel: UILabel!
-    @IBOutlet weak var tempLabel: UILabel!
-    @IBOutlet weak var higLowTempLabel: UILabel!
+    @IBOutlet private weak var cityLabel: UILabel!
+    @IBOutlet private weak var countryLabel: UILabel!
+    @IBOutlet private weak var weatherConditionsLabel: UILabel!
+    @IBOutlet private weak var currentTempLabel: UILabel!
+    @IBOutlet private weak var higLowTempLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,7 +24,12 @@ class CityTableViewCell: UITableViewCell {
     
     func setupCell(city: CityEntity) {
         cityLabel.text = city.cityName
-        
+        weatherConditionsLabel.text = city.weatherDescription
+        currentTempLabel.text = "\(city.currentTemp.int())°"
+        let maxTemp = "H:\(city.maxTemp.int())°"
+        let minTemp = "L:\(city.minTemp.int())°"
+        higLowTempLabel.text = maxTemp + " " + minTemp
+        countryLabel.text = city.country
     }
 
 
