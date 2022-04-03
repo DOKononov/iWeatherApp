@@ -17,15 +17,9 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let mainVC = MainVC()
-        mainVC.tabBarItem.image = UIImage(systemName: "star")
-        mainVC.tabBarItem.selectedImage = UIImage(systemName: "star.fill")
-        
-        let citiesVC = UINavigationController(rootViewController: CitiesVC())
-        citiesVC.tabBarItem.image = UIImage(systemName: "magnifyingglass.circle")
-        citiesVC.tabBarItem.selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
-        
-        viewControllers = [mainVC, citiesVC]
+
+        viewControllers = [MainVC.tabBarInstance,
+                           UINavigationController(rootViewController: CitiesVC.tabBarInstance)]
     }
     
     

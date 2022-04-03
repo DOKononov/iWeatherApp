@@ -8,6 +8,7 @@
 import UIKit
 
 final class HourlyForecastTableViewCell: UITableViewCell {
+    static let rowHeight: CGFloat = 120
 
 
     @IBOutlet private weak var collectionView: UICollectionView!

@@ -8,6 +8,8 @@
 import UIKit
 
 final class CurrentWeatherTableViewCell: UITableViewCell {
+    
+    static let rowHeight: CGFloat = 200
 
     @IBOutlet private weak var cityLabel: UILabel!
     @IBOutlet private weak var currentTempLabel: UILabel!

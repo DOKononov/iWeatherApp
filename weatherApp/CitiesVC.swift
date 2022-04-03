@@ -11,6 +11,13 @@ import CoreData
 
 final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
     
+    static var tabBarInstance: CitiesVC {
+        let citiesVC = CitiesVC()
+        citiesVC.tabBarItem.image = UIImage(systemName: "magnifyingglass.circle")
+        citiesVC.tabBarItem.selectedImage = UIImage(systemName: "magnifyingglass.circle.fill")
+        return citiesVC
+    }
+    
     
     private var searchController = UISearchController(searchResultsController: ResultsVC())
     private var viewModel: CitiesViewModelProtocol = CitiesViewModel()

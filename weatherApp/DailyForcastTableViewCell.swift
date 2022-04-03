@@ -9,6 +9,8 @@ import UIKit
 
 final class DailyForcastTableViewCell: UITableViewCell {
     
+    static let rowHeight: CGFloat = 50
+    
     @IBOutlet private weak var weakDayLabel: UILabel!
     @IBOutlet private weak var weatherImageView: UIImageView!
     @IBOutlet private weak var minTempLabel: UILabel!
@@ -28,7 +30,7 @@ final class DailyForcastTableViewCell: UITableViewCell {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
                 
-        networkService.downloadImage(imageID: dailyForcast.day.icon, complition: { [weak self] image in
+        DownloadImageService().downloadImage(imageID: dailyForcast.day.icon, complition: { [weak self] image in
             self?.weatherImageView.image = image
             
             self?.activityIndicator.isHidden = true

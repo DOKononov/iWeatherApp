@@ -14,15 +14,16 @@ protocol MainViewModelProtocol {
     
     var didContentChanged: (() -> Void)?  { get set }
     
-    func loadCurrentWeather(cityId: String)
-    func loadDailyForcast(city: String)
-    func loadHourlyForcast(city: String)
+    func loadWeather()
+    
 }
 
 
 
 
 final class MainViewModel: MainViewModelProtocol {
+
+    private lazy var networkService = NetworkService()
     
     var city: CityCoreDataModel? = CityCoreDataModel(cityId: "28580",
                                                      cityName: "Minsk",
@@ -36,6 +37,7 @@ final class MainViewModel: MainViewModelProtocol {
             didContentChanged?()
         }
     }
+    
     var currentWeather: [CurrentWeatherModel] = [] {
         didSet {
             didContentChanged?()
@@ -51,7 +53,22 @@ final class MainViewModel: MainViewModelProtocol {
     
     var didContentChanged: (() -> Void)?
     
-    private lazy var networkService = NetworkService()
+    func loadWeather() {
+        
+        if let id = city?.cityId {
+            loadCurrentWeather(cityId: id)
+            loadDailyForcast(cityId: id)
+            loadHourlyForcast(cityId: id)
+        } else {
+            print("ERROR!", #function)
+        }
+    }
+    
+}
+
+
+
+extension MainViewModel {
     
     func loadCurrentWeather(cityId: String) {
         networkService.getCurrentWeather(city: cityId) { [weak self] currentWeather in
@@ -59,16 +76,15 @@ final class MainViewModel: MainViewModelProtocol {
         }
     }
     
-    func loadDailyForcast(city: String) {
-        networkService.getDailyForcast(city: city) { [weak self] dailyForcastWeather in
+    func loadDailyForcast(cityId: String) {
+        networkService.getDailyForcast(city: cityId) { [weak self] dailyForcastWeather in
             self?.dailyForecasts = dailyForcastWeather.dailyForecasts
         }
     }
     
-    func loadHourlyForcast(city: String) {
-        networkService.getHourlyForcast(city: city) { [weak self] hourlyForcast in
+    func loadHourlyForcast(cityId: String) {
+        networkService.getHourlyForcast(city: cityId) { [weak self] hourlyForcast in
             self?.hourlyForcast = hourlyForcast
         }
     }
-    
 }

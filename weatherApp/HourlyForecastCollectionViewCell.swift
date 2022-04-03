@@ -25,7 +25,7 @@ final class HourlyForecastCollectionViewCell: UICollectionViewCell {
     private func loadImage(forcast: HourlyForecastWeatherModel) {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        NetworkService().downloadImage(imageID: forcast.weatherIcon) { [weak self] image in
+        DownloadImageService().downloadImage(imageID: forcast.weatherIcon) { [weak self] image in
             self?.weatherImageView.image = image
             
             self?.activityIndicator.isHidden = true

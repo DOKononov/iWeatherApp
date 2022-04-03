@@ -10,10 +10,10 @@ import UIKit
 
 final class NetworkService {
     
-    private let networkQueue = DispatchQueue(label: "networkQueue", qos: .userInitiated)
     private let host = "https://dataservice.accuweather.com/"
     private let tokenPath = "?apikey="
-    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
+//    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
+    private let token = "Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui"
     private let pathMetric = "&metric=true"
     
     
@@ -27,7 +27,6 @@ final class NetworkService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        networkQueue.async {
             URLSession.shared.dataTask(with: request) { data, responce, error in
                 if let error = error {
                     print("ERROR!!!", error.localizedDescription)
@@ -40,7 +39,6 @@ final class NetworkService {
                     }
                 }
             }.resume()
-        }
     }
     
     
@@ -54,7 +52,6 @@ final class NetworkService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        networkQueue.async {
             URLSession.shared.dataTask(with: request) { data, responce, error in
                 if let error = error {
                     print("ERROR!!!", error.localizedDescription)
@@ -66,29 +63,9 @@ final class NetworkService {
                     }
                 }
             }.resume()
-        }
     }
     
-    //https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/41-s.png
-    func downloadImage(imageID: Int, complition: @escaping (UIImage) -> Void) {
-        
-        let host = "https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/"
-        var id: String {
-            return imageID < 10 ? "0" + String(imageID) : String(imageID)
-        }
-        
-        guard let url = URL(string: host + String(format: "%@-s.png", id)) else {return}
-        
-        networkQueue.async {
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        complition(image)
-                    }
-                }
-            }
-        }
-    }
+
     
     
     
@@ -101,7 +78,6 @@ final class NetworkService {
         var reqest = URLRequest(url: url)
         reqest.httpMethod = "GET"
         
-        networkQueue.async {
             URLSession.shared.dataTask(with: reqest) { data, responce, error in
                 if let error = error {
                     print("Error: loadHourlyForcast()", error.localizedDescription)
@@ -114,7 +90,6 @@ final class NetworkService {
                     }
                 }
             }.resume()
-        }
     }
     
 //    locations/v1/cities/autocomplete?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&q=Min
@@ -126,7 +101,6 @@ final class NetworkService {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        networkQueue.async {
             URLSession.shared.dataTask(with: request) { data, responce, error in
                 if let error = error {
                     print("ERROR!!!", error.localizedDescription)
@@ -138,8 +112,9 @@ final class NetworkService {
                     }
                 }
             }.resume()
-        }
     }
+    
+    
 }
 
 

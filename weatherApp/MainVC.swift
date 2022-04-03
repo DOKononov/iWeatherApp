@@ -6,13 +6,26 @@
 //
 import UIKit
 
+enum TableViewSections: Int {
+    case currentWeather
+    case hourlyForcast
+    case dailyForcast
+}
+
 final class MainVC: UIViewController {
+    
+    static var tabBarInstance: MainVC {
+        let mainVC = MainVC()
+        mainVC.tabBarItem.image = UIImage(systemName: "star")
+        mainVC.tabBarItem.selectedImage = UIImage(systemName: "star.fill")
+        return mainVC
+    }
     
     private  var viewModel: MainViewModelProtocol = MainViewModel()
     var city: CityCoreDataModel? {
         didSet {
             viewModel.city = city
-            loadWeather()
+            viewModel.loadWeather()
         }
     }
     
@@ -33,24 +46,12 @@ final class MainVC: UIViewController {
         super.viewDidLoad()
         
         bind()
-        loadWeather()
+        viewModel.loadWeather()
         tableViewRegisterCells()
     }
     
     
-    private func loadWeather() {
-        
-        
-        if let cityId = viewModel.city?.cityId {
-            viewModel.loadCurrentWeather(cityId: cityId)
-            viewModel.loadDailyForcast(city: cityId)
-            viewModel.loadHourlyForcast(city: cityId)
-        } else {
-            print ("ERROR! ", #function)
-        }
-        
-        
-    }
+
     
     private func bind() {
         viewModel.didContentChanged = {
@@ -89,16 +90,19 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        let sections = TableViewSections(rawValue: indexPath.section)
+        
+        switch sections {
+            
+        case .currentWeather:
             return setupCurrenWeather(tableView: tableView, indexPath: indexPath) ?? UITableViewCell()
-        }
-        if indexPath.section == 1 {
-            return setupHourlyForcast(tableView: tableView, indexPath: indexPath)!
-        }
-        if indexPath.section == 2 {
+        case .hourlyForcast:
+            return setupHourlyForcast(tableView: tableView, indexPath: indexPath) ?? UITableViewCell()
+        case .dailyForcast:
             return setupDailyForcast(tableView: tableView, indexPath: indexPath) ?? UITableViewCell()
+        case .none:
+            return UITableViewCell()
         }
-        return UITableViewCell()
     }
     
     
@@ -111,13 +115,20 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 2 {
-            return "📅 5-DAY FORECAST"
-        }
-        if section == 1 {
+        
+        let sections = TableViewSections(rawValue: section)
+        
+        switch sections {
+        case .currentWeather:
+            return nil
+        case .hourlyForcast:
             return viewModel.currentWeather.first?.weatherDescription
+        case .dailyForcast:
+            return "📅 5-DAY FORECAST"
+        case .none:
+            return nil
         }
-        return nil
+
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -126,14 +137,17 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 200
-        } else if indexPath.section == 1 {
-            return 120.0
-        } else if indexPath.section == 2 {
+        let sections = TableViewSections(rawValue: indexPath.section)
+        
+        switch sections {
+        case .currentWeather:
+           return CurrentWeatherTableViewCell.rowHeight
+        case .hourlyForcast:
+            return HourlyForecastTableViewCell.rowHeight
+        case .dailyForcast:
+            return DailyForcastTableViewCell.rowHeight
+        case .none:
             return 50
-        } else {
-            return 50.0
         }
     }
     

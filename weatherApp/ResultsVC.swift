@@ -63,7 +63,7 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
         guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else {return}
         
         if result.isEmpty {
-            saveEntity(for: selectedCity)
+            viewModel.saveEntity(for: indexPath)
         } else {
             //TODO: -if city already in coredata 
         }
@@ -71,26 +71,6 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    
-    //MARK: -save city to coreData
-    private func saveEntity(for selectedCity: CityModel) {
-        let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
-        newEntity.cityId = selectedCity.cityId
-        newEntity.cityName = selectedCity.cityName
-        
-        networkService.getCurrentWeather(city: selectedCity.cityId) { currentWeather in
-            newEntity.currentTemp = currentWeather.first?.temperature.metric.value ?? 0
-            newEntity.weatherDescription = currentWeather.first?.weatherDescription
-        }
-        
-        networkService.getDailyForcast(city: selectedCity.cityId) { dailyForcast in
-            newEntity.maxTemp = dailyForcast.dailyForecasts.first?.temperature.maxTemp.value ?? 0
-            newEntity.minTemp = dailyForcast.dailyForecasts.first?.temperature.minTemp.value ?? 0
-        }
-        newEntity.country = selectedCity.country.countryFullName
-        
-        CoreDataService.shared.saveContext()
-    }
     
     
 }

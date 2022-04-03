@@ -10,21 +10,21 @@ import CoreData
 
 protocol CitiesViewModelProtocol {
     
-    var fetchResultCotroller: NSFetchedResultsController<CityEntity>! { get }
+    var fetchResultCotroller: NSFetchedResultsController<CityEntity> { get }
     var citiesArray: [CityEntity] { get }
     
     var didContentChanged: (() -> Void)?  { get set }
     
     func loadCitiesFromeCoreData()
     func updateCitiesData()
-    func setupFetchResultController()
+//    func setupFetchResultController()
     
 }
 
 
 final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResultsControllerDelegate {
     
-    var fetchResultCotroller: NSFetchedResultsController<CityEntity>!
+    lazy var fetchResultCotroller = NSFetchedResultsController<CityEntity>()
     
     var citiesArray: [CityEntity] = [] {
         didSet {
@@ -49,7 +49,7 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     }
     
     
-    func setupFetchResultController() {
+    private func setupFetchResultController() {
         let request = CityEntity.fetchRequest()
         let descriptor = NSSortDescriptor(key: "cityName", ascending: true)
         request.sortDescriptors = [descriptor]
