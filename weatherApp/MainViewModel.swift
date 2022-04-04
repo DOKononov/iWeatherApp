@@ -5,6 +5,8 @@
 //  Created by Dmitry Kononov on 15.03.22.
 //
 
+import CoreLocation
+
 protocol MainViewModelProtocol {
     
     var city: CityCoreDataModel? { get set }
@@ -14,23 +16,19 @@ protocol MainViewModelProtocol {
     
     var didContentChanged: (() -> Void)?  { get set }
     
-    func loadWeather()
-    
+    func loadWeather(id: String?)
+    func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees)
+    func setupLocationManager()
 }
 
 
-
-
-final class MainViewModel: MainViewModelProtocol {
-
-    private lazy var networkService = NetworkService()
+final class MainViewModel: NSObject, MainViewModelProtocol {
     
-    var city: CityCoreDataModel? = CityCoreDataModel(cityId: "28580",
-                                                     cityName: "Minsk",
-                                                     currentTemp: 2,
-                                                     weatherDescription: "",
-                                                     minTemp: 2,
-                                                     maxTemp: 2)
+    private lazy var locationManager = CLLocationManager()
+    private lazy var networkService = NetworkService()
+    private var checkCurrentLocation = false
+    
+    var city: CityCoreDataModel? 
 
     var dailyForecasts: [DailyForecast] = [] {
         didSet {
@@ -53,23 +51,18 @@ final class MainViewModel: MainViewModelProtocol {
     
     var didContentChanged: (() -> Void)?
     
-    func loadWeather() {
-        
-        if let id = city?.cityId {
+    func loadWeather(id: String?) {
+        guard let id = id else {  return }
             loadCurrentWeather(cityId: id)
             loadDailyForcast(cityId: id)
             loadHourlyForcast(cityId: id)
-        } else {
-            print("ERROR!", #function)
-        }
     }
     
 }
 
 
-
 extension MainViewModel {
-    
+
     func loadCurrentWeather(cityId: String) {
         networkService.getCurrentWeather(city: cityId) { [weak self] currentWeather in
             self?.currentWeather = currentWeather
@@ -87,4 +80,30 @@ extension MainViewModel {
             self?.hourlyForcast = hourlyForcast
         }
     }
+    
+    func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        networkService.getWeatherForLocation(lat: lat, lon: lon) { cityId in
+            self.loadWeather(id: cityId)
+            
+        }
+    }
+}
+
+
+
+extension MainViewModel: CLLocationManagerDelegate {
+    
+    func setupLocationManager() {
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.delegate = self
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            if let location = locations.first {
+               loadLocalWeather(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
+                locationManager.stopUpdatingLocation()
+            }
+    }
+    
 }

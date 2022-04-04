@@ -5,12 +5,15 @@
 //  Created by Dmitry Kononov on 7.03.22.
 //
 import UIKit
+import CoreLocation
+
 
 enum TableViewSections: Int {
     case currentWeather
     case hourlyForcast
     case dailyForcast
 }
+
 
 final class MainVC: UIViewController {
     
@@ -25,9 +28,10 @@ final class MainVC: UIViewController {
     var city: CityCoreDataModel? {
         didSet {
             viewModel.city = city
-            viewModel.loadWeather()
+            viewModel.loadWeather(id: viewModel.city?.cityId)
         }
     }
+    
     
     @IBOutlet private weak var currentCity: UILabel!
     @IBOutlet private weak var currentTemperature: UILabel!
@@ -46,22 +50,17 @@ final class MainVC: UIViewController {
         super.viewDidLoad()
         
         bind()
-        viewModel.loadWeather()
         tableViewRegisterCells()
+        viewModel.setupLocationManager()
     }
-    
-    
-
     
     private func bind() {
         viewModel.didContentChanged = {
-            self.tableView.reloadData()
-        }
+                self.tableView.reloadData()
+            }
     }
     
-    
     private func tableViewRegisterCells() {
-        
         let forcastTableViewCell = UINib(nibName: "\(DailyForcastTableViewCell.self)", bundle: nil)
         tableView.register(forcastTableViewCell, forCellReuseIdentifier: "\(DailyForcastTableViewCell.self)")
         
@@ -71,17 +70,10 @@ final class MainVC: UIViewController {
         let hourlyWeatherTableViewCellNib = UINib(nibName: "\(HourlyForecastTableViewCell.self)", bundle: nil)
         tableView.register(hourlyWeatherTableViewCellNib, forCellReuseIdentifier: "\(HourlyForecastTableViewCell.self)")
     }
-    
-    
 }
 
 
-
-
-
-
 extension MainVC: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 2 {
             return viewModel.dailyForecasts.count
@@ -105,10 +97,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    
-    
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -119,42 +107,29 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         let sections = TableViewSections(rawValue: section)
         
         switch sections {
-        case .currentWeather:
-            return nil
-        case .hourlyForcast:
-            return viewModel.currentWeather.first?.weatherDescription
-        case .dailyForcast:
-            return "📅 5-DAY FORECAST"
-        case .none:
-            return nil
+        case .currentWeather: return nil
+        case .hourlyForcast: return viewModel.currentWeather.first?.weatherDescription
+        case .dailyForcast: return "📅 5-DAY FORECAST"
+        case .none: return nil
         }
-
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = TableViewSections(rawValue: indexPath.section)
         
         switch sections {
-        case .currentWeather:
-           return CurrentWeatherTableViewCell.rowHeight
-        case .hourlyForcast:
-            return HourlyForecastTableViewCell.rowHeight
-        case .dailyForcast:
-            return DailyForcastTableViewCell.rowHeight
-        case .none:
-            return 50
+        case .currentWeather: return CurrentWeatherTableViewCell.rowHeight
+        case .hourlyForcast: return HourlyForecastTableViewCell.rowHeight
+        case .dailyForcast: return DailyForcastTableViewCell.rowHeight
+        case .none: return 50
         }
     }
     
-    
-    
     //MARK: -funcs setup tableView
-    
     private func setupCurrenWeather(tableView: UITableView, indexPath: IndexPath) -> CurrentWeatherTableViewCell? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(CurrentWeatherTableViewCell.self)", for: indexPath) as? CurrentWeatherTableViewCell
         
@@ -174,7 +149,5 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         cell?.getForcast(forcast: viewModel.hourlyForcast)
         return cell
     }
-    
-    
     
 }

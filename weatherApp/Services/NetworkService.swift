@@ -5,20 +5,20 @@
 //  Created by Dmitry Kononov on 7.03.22.
 //
 
-import Foundation
 import UIKit
+import CoreLocation
 
 final class NetworkService {
     
     private let host = "https://dataservice.accuweather.com/"
     private let tokenPath = "?apikey="
-//    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
-    private let token = "Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui"
+    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
+//    private let token = "Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui"
     private let pathMetric = "&metric=true"
     
     
     
-    //https://dataservice.accuweather.com/forecasts/v1/daily/5day/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&metric=true
+    //forecasts/v1/daily/5day/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&metric=true
     func getDailyForcast(city: String, complition: @escaping (DailyForcastWeatherModel) -> Void) {
         
         let dailyForcastPath = "forecasts/v1/daily/5day/"
@@ -35,14 +35,13 @@ final class NetworkService {
                         DispatchQueue.main.async {
                             complition(dailyForcast)
                         }
-                        
                     }
                 }
             }.resume()
     }
     
     
-    //https://dataservice.accuweather.com/currentconditions/v1/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj
+    //currentconditions/v1/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj
     func getCurrentWeather(city: String, complition: @escaping ([CurrentWeatherModel]) -> Void) {
         
         let currentWeatherPath = "currentconditions/v1/"
@@ -69,7 +68,7 @@ final class NetworkService {
     
     
     
-//https://dataservice.accuweather.com//forecasts/v1/hourly/12hour/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&metric=true
+//forecasts/v1/hourly/12hour/28580?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&metric=true
     func getHourlyForcast(city: String, complition: @escaping ([HourlyForecastWeatherModel]) -> Void) {
         
         let hourlyForcastPath = "/forecasts/v1/hourly/12hour/"
@@ -93,7 +92,6 @@ final class NetworkService {
     }
     
 //    locations/v1/cities/autocomplete?apikey=4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj&q=Min
-    
     func getLocationAutocomplete(city: String, complition: @escaping ([CityModel]) -> Void) {
         let path = "locations/v1/cities/autocomplete"
         let urlStr = host + path + tokenPath + token + "&q=" + city
@@ -112,6 +110,28 @@ final class NetworkService {
                     }
                 }
             }.resume()
+    }
+    
+//    locations/v1/cities/geoposition/search?apikey=Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui&q=37.785834%2C%20-122.406417
+    func getWeatherForLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, complition: @escaping (_ cityId: String) -> Void) {
+        
+        let path = "locations/v1/cities/geoposition/"
+        let urlStr = host + path + tokenPath + token + "&q=" + lat.double() + "%2C%20" + lon.double()
+        guard let url = URL(string: urlStr) else {return}
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, responce, error in
+            if let error = error {
+                print("ERROR!!!", error.localizedDescription)
+            } else if let data = data {
+                if let locationWeatherArray = try? JSONDecoder().decode(LocationWeather.self, from: data) {
+                    DispatchQueue.main.async {
+                        complition(locationWeatherArray.cityId)
+                    }
+                }
+            }
+        }.resume()
     }
     
     
