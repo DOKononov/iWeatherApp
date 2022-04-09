@@ -2,7 +2,7 @@
 //  CityEntity+CoreDataProperties.swift
 //  weatherApp
 //
-//  Created by Dmitry Kononov on 30.03.22.
+//  Created by Dmitry Kononov on 8.04.22.
 //
 //
 
@@ -18,11 +18,12 @@ extension CityEntity {
 
     @NSManaged public var cityId: String?
     @NSManaged public var cityName: String?
+    @NSManaged public var country: String?
     @NSManaged public var currentTemp: Double
     @NSManaged public var maxTemp: Double
     @NSManaged public var minTemp: Double
     @NSManaged public var weatherDescription: String?
-    @NSManaged public var country: String?
+    @NSManaged public var myLocation: Bool
 
 }
 

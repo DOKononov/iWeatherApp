@@ -20,7 +20,7 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
     
     
     private var searchController = UISearchController(searchResultsController: ResultsVC())
-    private var viewModel: CitiesViewModelProtocol = CitiesViewModel()
+     var viewModel: CitiesViewModelProtocol = CitiesViewModel()
     
     
     @IBOutlet private weak var tableView: UITableView! {
@@ -41,19 +41,16 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         registerCell()
         setupNavigationItem()
         
-        
         bind()
         viewModel.loadCitiesFromeCoreData()
         viewModel.updateCitiesData()
     }
-    
     
     private func bind() {
         viewModel.didContentChanged = {
             self.tableView.reloadData()
         }
     }
-    
     
     private func registerCell() {
         let cellNib = UINib(nibName: "\(CityTableViewCell.self)", bundle: nil)
@@ -73,14 +70,10 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
         resultsVC?.viewModel.loadCities(city: text)
     }
     
-    
-    
 }
 
 
-
 extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.citiesArray.count
@@ -91,7 +84,6 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         cell?.setupCell(city: viewModel.citiesArray[indexPath.row])
         return cell ?? UITableViewCell()
     }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let width = UIScreen.main.bounds.width - 32
@@ -127,6 +119,8 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
     
     //MARK: -delete city from coredata
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard viewModel.citiesArray[indexPath.row].cityName != "My Location" else {return nil}
         
         let deleteCell = UIContextualAction(style: .destructive, title: "Delete") { action, view, _ in
             let selectedCity = self.viewModel.citiesArray[indexPath.row]

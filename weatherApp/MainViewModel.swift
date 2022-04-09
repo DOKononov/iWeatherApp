@@ -26,7 +26,6 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     
     private lazy var locationManager = CLLocationManager()
     private lazy var networkService = NetworkService()
-    private var checkCurrentLocation = false
     
     var city: CityCoreDataModel? 
 
@@ -82,13 +81,14 @@ extension MainViewModel {
     }
     
     func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        networkService.getWeatherForLocation(lat: lat, lon: lon) { cityId in
-            self.loadWeather(id: cityId)
+        networkService.getWeatherForLocation(lat: lat.string(), lon: lon.string()) { city in
+            self.loadWeather(id: city.cityId)
             
+            let resultVC = ResultsVC(nibName: "\(ResultsVC.self)", bundle: nil)
+            resultVC.viewModel.locationCity = city
         }
     }
 }
-
 
 
 extension MainViewModel: CLLocationManagerDelegate {

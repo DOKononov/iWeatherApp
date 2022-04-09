@@ -8,8 +8,8 @@
 import Foundation
 
 struct CityModel: Codable {
-    let cityId: String
-    let cityName: String
+    var cityId: String
+    var cityName: String
     let country: AdministrativeArea
     
     enum CodingKeys: String, CodingKey {

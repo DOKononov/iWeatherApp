@@ -36,10 +36,10 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     
     func loadCitiesFromeCoreData() {
         
-        let request = CityEntity.fetchRequest()
-        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
-            citiesArray = result
-        }
+//        let request = CityEntity.fetchRequest()
+//        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
+//            citiesArray =  result
+//        }
         
         setupFetchResultController()
         try? fetchResultCotroller.performFetch()
@@ -51,8 +51,10 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     
     private func setupFetchResultController() {
         let request = CityEntity.fetchRequest()
-        let descriptor = NSSortDescriptor(key: "cityName", ascending: true)
-        request.sortDescriptors = [descriptor]
+        let nameDescriptor = NSSortDescriptor(key: "cityName", ascending: true)
+        let locationDescriptor = NSSortDescriptor(key: "myLocation", ascending: true)
+        
+        request.sortDescriptors = [locationDescriptor, nameDescriptor]
 
         fetchResultCotroller = NSFetchedResultsController(fetchRequest: request,
                                                           managedObjectContext: CoreDataService.shared.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -80,6 +82,20 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
             }
         }
     }
+    
+//    func myLocationAlwaysFirst(citiesArray: [CityEntity]) -> [CityEntity] {
+//        var tempArray = citiesArray
+//
+//        for index in 0..<tempArray.count {
+//            if tempArray[index].cityName == "My Location" {
+//               let myLocation = tempArray.remove(at: index)
+//                tempArray.insert(myLocation, at: 0)
+//                return tempArray
+//            }
+//        }
+//        return citiesArray
+//    }
+    
     
 }
 

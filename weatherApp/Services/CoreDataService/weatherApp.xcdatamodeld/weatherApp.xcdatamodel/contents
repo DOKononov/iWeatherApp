@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="CityEntity" representedClassName="CityEntity" syncable="YES">
         <attribute name="cityId" attributeType="String" defaultValueString="no id"/>
         <attribute name="cityName" attributeType="String" defaultValueString="no name"/>
@@ -7,9 +7,10 @@
         <attribute name="currentTemp" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="maxTemp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="minTemp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="myLocation" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="weatherDescription" attributeType="String" defaultValueString="no description"/>
     </entity>
     <elements>
-        <element name="CityEntity" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="CityEntity" positionX="-63" positionY="-18" width="128" height="149"/>
     </elements>
 </model>

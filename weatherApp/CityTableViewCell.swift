@@ -21,7 +21,6 @@ final class CityTableViewCell: UITableViewCell {
         self.clipsToBounds = true
     }
     
-    
     func setupCell(city: CityEntity) {
         cityLabel.text = city.cityName
         weatherConditionsLabel.text = city.weatherDescription
@@ -32,6 +31,4 @@ final class CityTableViewCell: UITableViewCell {
         countryLabel.text = city.country
     }
 
-
-    
 }

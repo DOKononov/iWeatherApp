@@ -9,13 +9,13 @@ import Foundation
 
 struct LocationWeather: Codable {
     let cityId: String
-//    let cityName: String
+    let cityName: String
 //    let country: AdministrativeArea
 //    let geoPosition: GeoPosition
     
     enum CodingKeys: String, CodingKey {
         case cityId = "Key"
-//        case cityName = "EnglishName"
+        case cityName = "EnglishName"
 //        case country = "Country"
 //        case geoPosition = "GeoPosition"
 //    }

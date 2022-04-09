@@ -56,17 +56,8 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let selectedCity = viewModel.cities[indexPath.row]
+        viewModel.saveEntity(for: indexPath)
         
-        let request = CityEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "cityId = %@", selectedCity.cityId)
-        guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else {return}
-        
-        if result.isEmpty {
-            viewModel.saveEntity(for: indexPath)
-        } else {
-            //TODO: -if city already in coredata 
-        }
         self.dismiss(animated: true, completion: nil)
         
     }

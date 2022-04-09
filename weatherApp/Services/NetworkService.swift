@@ -113,10 +113,10 @@ final class NetworkService {
     }
     
 //    locations/v1/cities/geoposition/search?apikey=Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui&q=37.785834%2C%20-122.406417
-    func getWeatherForLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, complition: @escaping (_ cityId: String) -> Void) {
+    func getWeatherForLocation(lat: String, lon: String, complition: @escaping (CityModel) -> Void) {
         
         let path = "locations/v1/cities/geoposition/"
-        let urlStr = host + path + tokenPath + token + "&q=" + lat.double() + "%2C%20" + lon.double()
+        let urlStr = host + path + tokenPath + token + "&q=" + lat + "%2C%20" + lon
         guard let url = URL(string: urlStr) else {return}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -125,9 +125,9 @@ final class NetworkService {
             if let error = error {
                 print("ERROR!!!", error.localizedDescription)
             } else if let data = data {
-                if let locationWeatherArray = try? JSONDecoder().decode(LocationWeather.self, from: data) {
+                if let locationWeatherArray = try? JSONDecoder().decode(CityModel.self, from: data) {
                     DispatchQueue.main.async {
-                        complition(locationWeatherArray.cityId)
+                        complition(locationWeatherArray)
                     }
                 }
             }

@@ -10,7 +10,7 @@ import CoreLocation
 
 extension CLLocationDegrees {
     
-    func double() -> String {
+    func string() -> String {
         return String(self)
     }
 }
