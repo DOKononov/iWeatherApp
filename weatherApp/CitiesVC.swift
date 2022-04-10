@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 
-
 final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDelegate, NSFetchedResultsControllerDelegate   {
     
     static var tabBarInstance: CitiesVC {
@@ -72,7 +71,7 @@ final class CitiesVC: UIViewController, UISearchResultsUpdating, UISearchBarDele
     
 }
 
-
+//MARK: tableView
 extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,7 +80,8 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(CityTableViewCell.self)", for: indexPath) as? CityTableViewCell
-        cell?.setupCell(city: viewModel.citiesArray[indexPath.row])
+        let city = viewModel.citiesArray[indexPath.row]
+        cell?.setupCell(city: city)
         return cell ?? UITableViewCell()
     }
     
@@ -93,10 +93,12 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let coreDataModel = viewModel.citiesArray[indexPath.row]
-        let cityToPresent =  cityModelFrom(coreDataModel: coreDataModel)
+        guard let cityToPresent =  cityModelFrom(coreDataModel: coreDataModel) else {return}
         
         guard let mainVC = tabBarController?.viewControllers?.first as? MainVC else {return}
-        mainVC.city = cityToPresent
+        mainVC.viewModel.city = CityModel(cityId: cityToPresent.cityId,
+                                          cityName: cityToPresent.cityName,
+                                          country: nil)
         
         self.tabBarController?.selectedIndex = 0
     }
@@ -117,10 +119,9 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    //MARK: -delete city from coredata
+    //MARK: delete city from coredata
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        guard viewModel.citiesArray[indexPath.row].cityName != "My Location" else {return nil}
+        guard !viewModel.citiesArray[indexPath.row].myLocation else {return nil}
         
         let deleteCell = UIContextualAction(style: .destructive, title: "Delete") { action, view, _ in
             let selectedCity = self.viewModel.citiesArray[indexPath.row]
@@ -131,9 +132,5 @@ extension CitiesVC:  UITableViewDelegate, UITableViewDataSource {
         }
         return UISwipeActionsConfiguration(actions: [deleteCell])
     }
-    
-    
-    
-    
-    
+       
 }

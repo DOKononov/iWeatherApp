@@ -5,8 +5,6 @@
 //  Created by Dmitry Kononov on 7.03.22.
 //
 import UIKit
-import CoreLocation
-
 
 enum TableViewSections: Int {
     case currentWeather
@@ -24,15 +22,8 @@ final class MainVC: UIViewController {
         return mainVC
     }
     
-    private  var viewModel: MainViewModelProtocol = MainViewModel()
-    var city: CityCoreDataModel? {
-        didSet {
-            viewModel.city = city
-            viewModel.loadWeather(id: viewModel.city?.cityId)
-        }
-    }
-    
-    
+    var viewModel: MainViewModelProtocol = MainViewModel()
+
     @IBOutlet private weak var currentCity: UILabel!
     @IBOutlet private weak var currentTemperature: UILabel!
     @IBOutlet private weak var currentWeatherDescription: UILabel!
@@ -44,7 +35,6 @@ final class MainVC: UIViewController {
             tableView.dataSource = self
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,9 +73,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let sections = TableViewSections(rawValue: indexPath.section)
-        
         switch sections {
-            
         case .currentWeather:
             return setupCurrenWeather(tableView: tableView, indexPath: indexPath) ?? UITableViewCell()
         case .hourlyForcast:
@@ -103,9 +91,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
         let sections = TableViewSections(rawValue: section)
-        
         switch sections {
         case .currentWeather: return nil
         case .hourlyForcast: return viewModel.currentWeather.first?.weatherDescription
@@ -120,7 +106,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let sections = TableViewSections(rawValue: indexPath.section)
-        
         switch sections {
         case .currentWeather: return CurrentWeatherTableViewCell.rowHeight
         case .hourlyForcast: return HourlyForecastTableViewCell.rowHeight
@@ -133,7 +118,9 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     private func setupCurrenWeather(tableView: UITableView, indexPath: IndexPath) -> CurrentWeatherTableViewCell? {
         let cell = tableView.dequeueReusableCell(withIdentifier: "\(CurrentWeatherTableViewCell.self)", for: indexPath) as? CurrentWeatherTableViewCell
         
-        cell?.setupCellWith(currentWeather: viewModel.currentWeather.first, dailyForcast: viewModel.dailyForecasts, currentCity: viewModel.city)
+        cell?.setupCellWith(currentWeather: viewModel.currentWeather.first,
+                            dailyForcast: viewModel.dailyForecasts,
+                            cityName: viewModel.city?.cityName)
         return cell
     }
     

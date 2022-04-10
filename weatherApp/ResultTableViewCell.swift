@@ -15,7 +15,7 @@ final class ResultTableViewCell: UITableViewCell {
 
     func setupCell(city: CityModel) {
         cityLabel.text = city.cityName
-        countryLabel.text = city.country.countryFullName
+        countryLabel.text = city.country?.countryFullName
     }
     
 }

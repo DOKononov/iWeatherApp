@@ -49,36 +49,34 @@ class ResultsViewModel: ResultsViewModelProtocol {
     func saveEntity(for indexPath: IndexPath) {
         
         if isUnique(cityId: cities[indexPath.row].cityId) {
-      
-        
-        let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
-        newEntity.cityId = cities[indexPath.row].cityId
-        newEntity.cityName = cities[indexPath.row].cityName
-        
-        networkDataForCity(cityId: cities[indexPath.row].cityId, cityEntity: newEntity)
-        
-        newEntity.country = cities[indexPath.row].country.countryFullName
+            
+            
+            let newEntity = CityEntity(context: CoreDataService.shared.managedObjectContext)
+            newEntity.cityId = cities[indexPath.row].cityId
+            newEntity.cityName = cities[indexPath.row].cityName
+            
+            networkDataForCity(cityId: cities[indexPath.row].cityId, cityEntity: newEntity)
+            
+            newEntity.country = cities[indexPath.row].country?.countryFullName
             CoreDataService.shared.saveContext()
         }
-   
+        
     }
     
     func addMyLocation(locationCity: CityModel?) {
         guard let locationCity = locationCity else { return}
         if isUnique(cityId: locationCity.cityId) {
-
-        let myLocation = CityEntity(context: CoreDataService.shared.managedObjectContext)
-        myLocation.cityName = locationCity.cityName
-        myLocation.cityId = locationCity.cityId
-        myLocation.country = locationCity.country.countryFullName
-        
-        networkDataForCity(cityId: locationCity.cityId, cityEntity: myLocation)
-        myLocation.myLocation = true
+            
+            let myLocation = CityEntity(context: CoreDataService.shared.managedObjectContext)
+            myLocation.cityName = locationCity.cityName
+            myLocation.cityId = locationCity.cityId
+            myLocation.country = locationCity.country?.countryFullName
+            
+            networkDataForCity(cityId: locationCity.cityId, cityEntity: myLocation)
+            myLocation.myLocation = true
             CoreDataService.shared.saveContext()
         }
-    
     }
-    
     
     private func networkDataForCity(cityId: String, cityEntity: CityEntity) {
         networkService.getCurrentWeather(city: cityId) { currentWeather in
@@ -96,11 +94,11 @@ class ResultsViewModel: ResultsViewModelProtocol {
         let request = CityEntity.fetchRequest()
         request.predicate = NSPredicate(format: "cityId = %@", cityId)
         guard let result = try? CoreDataService.shared.managedObjectContext.fetch(request) else { return false }
-            if result.isEmpty {
-                return true
-            }  else {
-                return false
-            }
+        if result.isEmpty {
+            return true
+        }  else {
+            return false
+        }
     }
     
 }

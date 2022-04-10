@@ -18,21 +18,18 @@ final class DailyForcastTableViewCell: UITableViewCell {
     @IBOutlet private weak var maxTempLabel: UILabel!
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    
-    var currentTemp = 0.0
-    
+        
     private lazy var dataService =  DateService()
     private lazy var networkService = NetworkService()
  
-    
     func setup(dailyForcast: DailyForecast, currentTemp: Double) {
         
+        weatherImageView.image = nil
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
                 
         DownloadImageService().downloadImage(imageID: dailyForcast.day.icon, complition: { [weak self] image in
             self?.weatherImageView.image = image
-            
             self?.activityIndicator.isHidden = true
             self?.activityIndicator.stopAnimating()
         })
@@ -43,25 +40,13 @@ final class DailyForcastTableViewCell: UITableViewCell {
         setupProgressView(dailyForcast: dailyForcast, currentTemp: currentTemp)
     }
     
-    
-    
     private func setupProgressView(dailyForcast: DailyForecast, currentTemp: Double) {
-                
         let maxTemp = Float(dailyForcast.temperature.maxTemp.value)
         let minTemp = Float(dailyForcast.temperature.minTemp.value)
-        
         let tempDiff =  maxTemp - minTemp
         weatherProgressView.progress = Float(currentTemp) / tempDiff
-        
-//        if Float(dailyForcast.temperature.maxTemp.value) != 0 {
-//            weatherProgressView.progress = Float(currentTemp) / Float(dailyForcast.temperature.maxTemp.value)
-//        } else {
-//            weatherProgressView.progress = 0
-//        }
-        
     }
-    
-    
+ 
 }
 
 

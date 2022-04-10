@@ -17,8 +17,6 @@ protocol CitiesViewModelProtocol {
     
     func loadCitiesFromeCoreData()
     func updateCitiesData()
-//    func setupFetchResultController()
-    
 }
 
 
@@ -35,12 +33,6 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     var didContentChanged: (() -> Void)?
     
     func loadCitiesFromeCoreData() {
-        
-//        let request = CityEntity.fetchRequest()
-//        if let result = try? CoreDataService.shared.managedObjectContext.fetch(request) {
-//            citiesArray =  result
-//        }
-        
         setupFetchResultController()
         try? fetchResultCotroller.performFetch()
         if let result = fetchResultCotroller.fetchedObjects {
@@ -52,7 +44,7 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
     private func setupFetchResultController() {
         let request = CityEntity.fetchRequest()
         let nameDescriptor = NSSortDescriptor(key: "cityName", ascending: true)
-        let locationDescriptor = NSSortDescriptor(key: "myLocation", ascending: true)
+        let locationDescriptor = NSSortDescriptor(key: "myLocation", ascending: false)
         
         request.sortDescriptors = [locationDescriptor, nameDescriptor]
 
@@ -82,20 +74,6 @@ final class CitiesViewModel: NSObject, CitiesViewModelProtocol, NSFetchedResults
             }
         }
     }
-    
-//    func myLocationAlwaysFirst(citiesArray: [CityEntity]) -> [CityEntity] {
-//        var tempArray = citiesArray
-//
-//        for index in 0..<tempArray.count {
-//            if tempArray[index].cityName == "My Location" {
-//               let myLocation = tempArray.remove(at: index)
-//                tempArray.insert(myLocation, at: 0)
-//                return tempArray
-//            }
-//        }
-//        return citiesArray
-//    }
-    
     
 }
 

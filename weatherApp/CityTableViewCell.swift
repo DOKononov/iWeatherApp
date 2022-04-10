@@ -28,7 +28,7 @@ final class CityTableViewCell: UITableViewCell {
         let maxTemp = "H:\(city.maxTemp.int())°"
         let minTemp = "L:\(city.minTemp.int())°"
         higLowTempLabel.text = maxTemp + " " + minTemp
-        countryLabel.text = city.country
+        city.myLocation ? (cityLabel.text = "My Location") : (countryLabel.text = city.country)
     }
 
 }

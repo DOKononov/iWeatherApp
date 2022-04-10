@@ -12,8 +12,8 @@ final class NetworkService {
     
     private let host = "https://dataservice.accuweather.com/"
     private let tokenPath = "?apikey="
-    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
-//    private let token = "Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui"
+//    private let token = "4bd9MqHvj0GA2ILcOXgMyG6dVX2hFgGj"
+    private let token = "Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui"
     private let pathMetric = "&metric=true"
     
     
@@ -113,7 +113,7 @@ final class NetworkService {
     }
     
 //    locations/v1/cities/geoposition/search?apikey=Bn4JEWmiKMwpDeLGWnLKPS74d3eRRGui&q=37.785834%2C%20-122.406417
-    func getWeatherForLocation(lat: String, lon: String, complition: @escaping (CityModel) -> Void) {
+    func findCityByGeo(lat: String, lon: String, complition: @escaping (CityModel) -> Void) {
         
         let path = "locations/v1/cities/geoposition/"
         let urlStr = host + path + tokenPath + token + "&q=" + lat + "%2C%20" + lon

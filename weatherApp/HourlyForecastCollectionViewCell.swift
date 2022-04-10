@@ -23,6 +23,7 @@ final class HourlyForecastCollectionViewCell: UICollectionViewCell {
 
 
     private func loadImage(forcast: HourlyForecastWeatherModel) {
+        weatherImageView.image = nil
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         DownloadImageService().downloadImage(imageID: forcast.weatherIcon) { [weak self] image in

@@ -8,8 +8,7 @@
 import CoreLocation
 
 protocol MainViewModelProtocol {
-    
-    var city: CityCoreDataModel? { get set }
+    var city: CityModel? { get set }
     var dailyForecasts: [DailyForecast] { get }
     var currentWeather: [CurrentWeatherModel] { get }
     var hourlyForcast: [HourlyForecastWeatherModel] { get }
@@ -17,7 +16,6 @@ protocol MainViewModelProtocol {
     var didContentChanged: (() -> Void)?  { get set }
     
     func loadWeather(id: String?)
-    func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees)
     func setupLocationManager()
 }
 
@@ -27,8 +25,12 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
     private lazy var locationManager = CLLocationManager()
     private lazy var networkService = NetworkService()
     
-    var city: CityCoreDataModel? 
-
+    var city: CityModel? {
+        didSet {
+            loadWeather(id: city?.cityId)
+        }
+    }
+    
     var dailyForecasts: [DailyForecast] = [] {
         didSet {
             didContentChanged?()
@@ -46,22 +48,22 @@ final class MainViewModel: NSObject, MainViewModelProtocol {
             didContentChanged?()
         }
     }
-
+    
     
     var didContentChanged: (() -> Void)?
     
     func loadWeather(id: String?) {
         guard let id = id else {  return }
-            loadCurrentWeather(cityId: id)
-            loadDailyForcast(cityId: id)
-            loadHourlyForcast(cityId: id)
+        loadCurrentWeather(cityId: id)
+        loadDailyForcast(cityId: id)
+        loadHourlyForcast(cityId: id)
     }
     
 }
 
 
 extension MainViewModel {
-
+    
     func loadCurrentWeather(cityId: String) {
         networkService.getCurrentWeather(city: cityId) { [weak self] currentWeather in
             self?.currentWeather = currentWeather
@@ -80,9 +82,9 @@ extension MainViewModel {
         }
     }
     
-    func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
-        networkService.getWeatherForLocation(lat: lat.string(), lon: lon.string()) { city in
-            self.loadWeather(id: city.cityId)
+    private func loadLocalWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        networkService.findCityByGeo(lat: lat.string(), lon: lon.string()) { city in
+            self.city = city
             
             let resultVC = ResultsVC(nibName: "\(ResultsVC.self)", bundle: nil)
             resultVC.viewModel.locationCity = city
@@ -100,10 +102,10 @@ extension MainViewModel: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            if let location = locations.first {
-               loadLocalWeather(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
-                locationManager.stopUpdatingLocation()
-            }
+        if let location = locations.first {
+            loadLocalWeather(lat: location.coordinate.latitude, lon: location.coordinate.longitude)
+            locationManager.stopUpdatingLocation()
+        }
     }
     
 }

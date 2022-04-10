@@ -36,7 +36,6 @@ final class ResultsVC: UIViewController {
         tableView.register(cellNib, forCellReuseIdentifier: "\(ResultTableViewCell.self)")
     }
     
-    
 }
 
 
@@ -55,13 +54,8 @@ extension ResultsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         viewModel.saveEntity(for: indexPath)
-        
         self.dismiss(animated: true, completion: nil)
-        
     }
-    
-    
-    
+     
 }

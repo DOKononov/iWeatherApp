@@ -10,7 +10,7 @@ import Foundation
 struct CityModel: Codable {
     var cityId: String
     var cityName: String
-    let country: AdministrativeArea
+    let country: AdministrativeArea?
     
     enum CodingKeys: String, CodingKey {
         case cityId = "Key"
